@@ -1,0 +1,9 @@
+.app-wrap {
+    margin: 0 auto;
+    width: 98%;
+    max-width: 1140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
