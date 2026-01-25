@@ -1,9 +1,43 @@
 .app-wrap {
-    margin: 0 auto;
-    width: 98%;
-    max-width: 1140px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px
+  margin: 0 auto;
+  width: 98%;
+  max-width: 1140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paramEditor {
+  border: #33373E solid 2px;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  background-color: #33373E;
+}
+
+.header {
+  width: 100%;  
+  margin: 0;
+  padding: 40px 0 20px 0;
+  color: #61DAFB;
+  text-align: center;
+  background-color: #21222A;
+}
+
+.form {
+  padding: 40px 20px 20px 20px;
+  color: #FFFFFF;  
+}
+
+.param-wrap {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.param__field {
+  border-radius: 6px;
+  border-style: none;
+  font-size: 1.2rem;
 }
