@@ -24,6 +24,10 @@
 }
 
 .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 40px 20px 20px 20px;
   color: #FFFFFF;  
 }
@@ -40,4 +44,16 @@
   border-radius: 6px;
   border-style: none;
   font-size: 1.2rem;
+}
+
+.save-btn {
+  width: 100px;
+  margin-top: 30px;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }
