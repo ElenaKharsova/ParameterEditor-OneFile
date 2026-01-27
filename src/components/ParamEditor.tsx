@@ -1,5 +1,5 @@
 import React from "react";
-import { Model, Param } from "src/types";
+import { Model, Param, ParamValue } from "src/types";
 
 export interface Props {
   params: Param[],
@@ -20,7 +20,7 @@ export default function ParamEditor({model, params}: Props){
     return modelDictionaryDraft;
   }
 
-  const list = params.map(param=>{
+  const renderList = params.map(param=>{
     return(
       <div key={param.id} className="param-wrap">
         <label
@@ -39,20 +39,24 @@ export default function ParamEditor({model, params}: Props){
       </div>
   )})
 
-  function getModel(): Model{
-    const formData = new FormData();
-    console.log('formData',formData);
-    return ;
+  function getModel(): Model {
+    const paramValues: ParamValue[] = params.map(param=>({
+      paramId: param.id,
+      value: modelDictionary[param.id] ?? ''
+    }))
+
+    return {
+      paramValues: paramValues
+    };
   }
 
-  function saveModel(e: React.FormEvent){
+  function saveModel(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    getModel();
-    console.log('The model has been saved');
+    console.log('The model has been saved', getModel());
   }
 
   function changeField(e:React.ChangeEvent<HTMLInputElement>){
-    const key:number = +e.currentTarget.name;
+    const key:number = Number(e.currentTarget.name);
     const value: string = e.currentTarget.value;
 
     setModelDictionary(prevModel=>({
@@ -66,7 +70,7 @@ export default function ParamEditor({model, params}: Props){
       <h1 className="header">Parameter Editor</h1>
       <form className="form" onSubmit={saveModel}>
         <div className="params-wrap">
-          {list}
+          {renderList}
         </div>
         <button 
           type="submit" 
