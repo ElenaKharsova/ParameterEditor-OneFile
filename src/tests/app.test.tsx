@@ -93,8 +93,6 @@ describe('UI', ()=>{
       const expectedValues = modelInit.paramValues.map(param=>
         newParamValues.find(newParam=> newParam.paramId===param.paramId) ?? param
       )
-
-      console.log('expectedValues', expectedValues);
         
       expect(onSave).toHaveBeenCalledWith(
         expect.objectContaining({"paramValues": expectedValues
