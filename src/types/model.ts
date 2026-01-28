@@ -4,7 +4,7 @@ export interface Color {
 
 export interface ParamValue {
   paramId: number,
-  value: string
+  value: string |number | Boolean
 }
 
 export interface Model {

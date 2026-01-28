@@ -1,5 +1,5 @@
 import React from "react";
-import { Model, Param, ParamValue } from "src/types";
+import { Model, Param, ParamValue, ParamType, ParamValueMap } from "src/types";
 
 export interface Props {
   params: Param[],
@@ -14,7 +14,7 @@ export default function ParamEditor({model, params}: Props){
     const modelDictionaryDraft: Record<number,string> = {};
 
     model.paramValues.forEach(param=>{
-      modelDictionaryDraft[param.paramId] = param.value ?? '';
+      modelDictionaryDraft[param.paramId] = String(param.value) ?? '';
     })
 
     return modelDictionaryDraft;
@@ -40,9 +40,23 @@ export default function ParamEditor({model, params}: Props){
   )})
 
   function getModel(): Model {
+    function conversationTypeValue(type: ParamType, value: string): ParamValueMap[ParamType] {    
+      switch (type) {
+        case 'string':
+          return value;
+        case 'number':
+          return Number(value);
+        case 'boolean':
+          return value === 'true';
+        default:
+          return value as string;
+      }
+    }
+
     const paramValues: ParamValue[] = params.map(param=>({
       paramId: param.id,
-      value: modelDictionary[param.id] ?? ''
+      value: conversationTypeValue(param.type, modelDictionary[param.id] ?? ''),
+      type: param.type
     }))
 
     return {

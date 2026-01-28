@@ -1,14 +1,17 @@
 export const params = [
   {
     'id': 1,
-    'name': 'Назначение'
+    'name': 'Назначение',
+    'type': 'string'
   },
   {
     'id': 2,
-    'name': 'Длина'
+    'name': 'Длина',
+    'type': 'string'
   },
   {
     'id': 3,
-    'name': 'Размер'
+    'name': 'Размер',
+    'type': 'string'
   }
 ]
