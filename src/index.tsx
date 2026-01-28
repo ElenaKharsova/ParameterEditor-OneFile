@@ -4,19 +4,20 @@ import "./styles/style.css"
 
 interface Props {
   params: Param[],
-  model: Model
+  model: Model,
+  onSave?: (model:Model)=>void
 }
 
 interface Color {
   color: string
 }
 
-interface ParamValue {
+export interface ParamValue {
   paramId: number,
   value: string
 }
 
-interface Model {
+export interface Model {
   paramValues: ParamValue[],
   colors?: Color[]
 }
@@ -27,7 +28,7 @@ type ParamValueMap = {
   string: string
 }
 
-interface Param {
+export interface Param {
   id: number,
   name: string,
   type: ParamType
@@ -68,11 +69,14 @@ const paramsInit: Param[] = [
   }
 ]
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const rootElement = document.getElementById('root') as HTMLElement
+if(rootElement){
+  const root = ReactDOM.createRoot(rootElement);
 
-root.render(
+  root.render(
     <App />
-);
+  );
+}
 
 function App(){
   const [model] = React.useState(modelInit);
@@ -85,7 +89,7 @@ function App(){
   );
 }
 
-function ParamEditor({model, params}: Props){ 
+export function ParamEditor({model, params, onSave}: Props){ 
   const [modelDictionary, setModelDictionary] 
     = React.useState<Record<number,string>>(()=>createModelDictionary(model));
   
@@ -109,6 +113,7 @@ function ParamEditor({model, params}: Props){
         <label
           htmlFor={`name-${param.id}`}
           className="param__name"
+          data-testid={`label-${param.id}`}
         >
         {param.name}
         </label>
@@ -118,6 +123,7 @@ function ParamEditor({model, params}: Props){
           value={modelDictionary[param.id] ?? ''}
           className="param__field"
           onChange={changeField}
+          data-testid={`field-${param.id}`}
         />
       </div>
   )})
@@ -143,7 +149,8 @@ function ParamEditor({model, params}: Props){
 
   function saveModel(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    console.log('The model has been saved', getModel());
+    const newModel = getModel();
+    onSave?.(newModel);
   }
 
   function changeField(e:React.ChangeEvent<HTMLInputElement>){
@@ -159,11 +166,16 @@ function ParamEditor({model, params}: Props){
   return(
     <main className='paramEditor'>
       <h1 className="header">Parameter Editor</h1>
-      <form className="form" onSubmit={saveModel}>
+      <form 
+       className="form" 
+       onSubmit={saveModel}
+       data-testid="form"
+       >
         <div className="params-wrap">
           {renderList}
         </div>
         <button 
+          data-testid="save-btn"
           type="submit" 
           className="save-btn"
         >Save</button>
