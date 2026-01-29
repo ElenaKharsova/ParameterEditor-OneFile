@@ -22,16 +22,34 @@ export interface Model {
   colors?: Color[]
 }
 
+export interface Param {
+  id: number,
+  name: string,
+  type: ParamType
+}
+
+type EditorProps = {
+  param: Param,
+  value: string,
+  onChange: (value: string)=>void
+}
+
 type ParamType = 'string';
 
 type ParamValueMap = {
   string: string
 }
 
-export interface Param {
-  id: number,
-  name: string,
-  type: ParamType
+const editors: Record<ParamType, (prop: EditorProps)=>React.ReactElement> = {
+  string: ({param, value, onChange})=>
+    <input
+      name={`${param.id}`}
+      id={`name-${param.id}`}
+      value={value}
+      className="param__field"
+      onChange={e=>onChange(e.currentTarget.value)}
+      data-testid={`field-${param.id}`}
+    ></input>
 }
 
 const modelInit: Model = {
@@ -108,6 +126,8 @@ export function ParamEditor({model, params, onSave}: Props){
   },[model.paramValues]);
 
   const renderList = params.map(param=>{
+    const Editor = editors[param.type];
+
     return(
       <div key={param.id} className="param-wrap">
         <label
@@ -117,13 +137,10 @@ export function ParamEditor({model, params, onSave}: Props){
         >
         {param.name}
         </label>
-        <input 
-          name={`${param.id}`}
-          id={`name-${param.id}`}
+        <Editor 
+          param={param}
           value={modelDictionary[param.id] ?? ''}
-          className="param__field"
-          onChange={changeField}
-          data-testid={`field-${param.id}`}
+          onChange={targetValue=>changeField(param.id, targetValue)}
         />
       </div>
   )})
@@ -151,15 +168,14 @@ export function ParamEditor({model, params, onSave}: Props){
     e.preventDefault();
     const newModel = getModel();
     onSave?.(newModel);
+    console.log(newModel);
   }
 
-  function changeField(e:React.ChangeEvent<HTMLInputElement>){
-    const key:number = Number(e.currentTarget.name);
-    const value: string = e.currentTarget.value;
+  function changeField(id: number, value: string){
 
     setModelDictionary(prevModel=>({
       ...prevModel,
-      [key]: value
+      [id]: value
     }));
   }
 

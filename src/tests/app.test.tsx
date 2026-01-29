@@ -89,7 +89,7 @@ describe('UI', ()=>{
         fireEvent.change(input, {target: {value}})  
       }
 
-      fireEvent.click(screen.getByTestId(`save-btn`));
+      fireEvent.submit(screen.getByTestId(`form`));
       const expectedValues = modelInit.paramValues.map(param=>
         newParamValues.find(newParam=> newParam.paramId===param.paramId) ?? param
       )
